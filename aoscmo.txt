@@ -1,0 +1,91 @@
+daa binomial coefficiient 
+
+def binomialCoeff(n, k):
+
+	if k > n:
+		return 0
+	if k == 0 or k == n:
+		return 1
+
+	return binomialCoeff(n-1, k-1) + binomialCoeff(n-1, k)
+
+
+n = 5
+k = 2
+print ("Value of C(%d,%d) is (%d)" % (n, k, binomialCoeff(n, k)))
+						
+
+_______________________________________-------------------________________________________________-
+
+			
+daa 0-1 knapsack branch and bound 
+
+def knapsack(value, weight, capacity):
+ n = len(value) - 1
+ m = [[-1]*(capacity + 1) for _ in range(n + 1)]
+ for w in range(capacity + 1):
+     m[0][w] = 0
+ for i in range(1, n + 1):
+      for w in range(capacity + 1):
+         if weight[i] > w:
+              m[i][w] = m[i - 1][w]
+ else:
+   m[i][w] = max(m[i - 1][w - weight[i]] + value[i], 
+ m[i - 1][w])
+ return m[n][capacity]
+n = int(input('Enter number of items: '))
+value = input('Enter the values of the {} item(s) in order: '
+ .format(n)).split()
+value = [int(v) for v in value]
+value.insert(0, None) # so that the value of the ith item is at value[i]
+weight = input('Enter the positive weights of the {} item(s) in order: '
+ .format(n)).split()
+weight = [int(w) for w in weight]
+weight.insert(0, None) # so that the weight of the ith item is at weight[i]
+capacity = int(input('Enter maximum weight: '))
+ans = knapsack(value, weight, capacity)
+print('The maximum value of items that can be carried:', ans)
+
+
+________________________________________------------_________________________________________-
+
+
+
+daa knapsack greedy method
+
+def fractional_knapsack(value, weight, capacity):
+    
+    index = list(range(len(value)))
+    ratio = [v/w for v, w in zip(value, weight)]
+    index.sort(key=lambda i: ratio[i], reverse=True)
+ 
+    max_value = 0
+    fractions = [0]*len(value)
+    for i in index:
+        if weight[i] <= capacity:
+            fractions[i] = 1
+            max_value += value[i]
+            capacity -= weight[i]
+        else:
+            fractions[i] = capacity/weight[i]
+            max_value += value[i]*capacity/weight[i]
+            break
+ 
+    return max_value, fractions
+ 
+ 
+n = int(input('Enter number of items: '))
+value = input('Enter the values of the {} item(s) in order: '
+              .format(n)).split()
+value = [int(v) for v in value]
+weight = input('Enter the positive weights of the {} item(s) in order: '
+               .format(n)).split()
+weight = [int(w) for w in weight]
+capacity = int(input('Enter maximum weight: '))
+ 
+max_value, fractions = fractional_knapsack(value, weight, capacity)
+print('The maximum value of items that can be carried:', max_value)
+
+_________________________________________________------------------------_______________________________-
+
+
